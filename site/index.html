@@ -6,83 +6,304 @@
   <title>BrewMoose Labs</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    *{margin:0;padding:0;box-sizing:border-box}
 
-    body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #0f1117;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    body{
+      min-height:100vh;
+      background:#09090f;
+      color:#c0c0cc;
+      font-family:'SF Mono','Fira Code','Cascadia Code','JetBrains Mono','Menlo','Consolas',monospace;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      padding:2rem 1rem;gap:2rem;
     }
 
-    .logo-container {
-      text-align: center;
-      animation: fadeIn 1.2s ease-out;
+    /* ── header ────────────────────────────── */
+    header{text-align:center;animation:fadeIn .6s ease-out}
+    h1{
+      font-size:clamp(1.8rem,5vw,3rem);font-weight:800;
+      letter-spacing:.15em;color:#d4973e;line-height:1.1;
+    }
+    h1 .labs{color:#5a6a8a;font-weight:300;letter-spacing:.25em}
+    .tagline{
+      margin-top:.75rem;font-size:.75rem;letter-spacing:.3em;
+      color:#3a3a4a;text-transform:lowercase;
+    }
+    .divider{color:#1a1a2a;letter-spacing:.5em;font-size:.6rem;animation:fadeIn .8s ease-out}
+
+    /* ── game chrome ──────────────────────── */
+    #game-wrapper{width:100%;max-width:680px;animation:fadeIn 1s ease-out .15s both}
+    #score-bar{
+      display:flex;justify-content:flex-end;gap:2rem;
+      padding:0 .25rem .4rem;font-size:.75rem;letter-spacing:.12em;
+      color:#4a4a5a;font-variant-numeric:tabular-nums;
+    }
+    #score-bar .hi{color:#2a2a3a}
+
+    /* ── game area ────────────────────────── */
+    #game-area{
+      position:relative;width:100%;height:180px;
+      border:1px solid #16162a;border-radius:3px;
+      overflow:hidden;background:#0b0b14;
+      cursor:pointer;user-select:none;-webkit-user-select:none;
+      -webkit-tap-highlight-color:transparent;
+    }
+    #game-area:focus-visible{outline:1px solid #d4973e;outline-offset:2px}
+
+    /* ── moose ────────────────────────────── */
+    #moose{
+      position:absolute;font-size:38px;line-height:1;
+      left:50px;bottom:24px;z-index:2;
+      transform:scaleX(-1);
+      filter:drop-shadow(0 0 6px rgba(212,151,62,.15));
+    }
+    #game-area.running #moose{animation:bob .25s ease-in-out infinite}
+    @keyframes bob{
+      0%,100%{transform:translateY(0) scaleX(-1)}
+      50%{transform:translateY(-2px) scaleX(-1)}
     }
 
-    .logo-container svg {
-      width: min(80vw, 420px);
-      height: auto;
-    }
+    /* ── obstacles ────────────────────────── */
+    .obs{position:absolute;line-height:1;bottom:24px;z-index:1}
 
-    .tagline {
-      color: #6b7280;
-      font-size: 0.95rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-top: 1.5rem;
+    /* ── ground ───────────────────────────── */
+    #ground{
+      position:absolute;bottom:0;left:0;width:100%;height:24px;
+      border-top:1px solid #1e1e30;overflow:hidden;
+      font-size:10px;line-height:12px;color:#14141f;padding-top:4px;
     }
+    #ground-inner{white-space:nowrap;position:absolute;left:0}
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(12px); }
-      to   { opacity: 1; transform: translateY(0); }
+    /* ── message overlay ──────────────────── */
+    #msg{
+      position:absolute;inset:0;display:flex;flex-direction:column;
+      align-items:center;justify-content:center;z-index:10;
+      pointer-events:none;gap:.3rem;
+    }
+    #msg .title{font-size:1rem;letter-spacing:.25em;color:#d4973e;font-weight:700}
+    #msg .sub{font-size:.7rem;letter-spacing:.2em;color:#4a4a5a}
+
+    /* ── score flash ──────────────────────── */
+    .score-flash{animation:flash .3s ease-out}
+    @keyframes flash{0%,100%{color:#4a4a5a}50%{color:#d4973e}}
+
+    /* ── footer ───────────────────────────── */
+    footer{text-align:center;animation:fadeIn 1s ease-out .3s both}
+    .copy{font-size:.65rem;color:#1e1e2e;letter-spacing:.12em}
+
+    @keyframes fadeIn{
+      from{opacity:0;transform:translateY(6px)}
+      to{opacity:1;transform:translateY(0)}
     }
   </style>
 </head>
 <body>
-  <div class="logo-container">
-    <!-- BrewMoose Labs logo -->
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 260" role="img" aria-label="BrewMoose Labs logo">
-      <!-- Mug body -->
-      <rect x="100" y="60" width="180" height="150" rx="18" fill="#c0813d" />
-      <rect x="110" y="70" width="160" height="130" rx="12" fill="#d4973e" />
 
-      <!-- Beer foam -->
-      <ellipse cx="145" cy="68" rx="30" ry="18" fill="#fff8e7" />
-      <ellipse cx="190" cy="62" rx="35" ry="22" fill="#fff8e7" />
-      <ellipse cx="240" cy="66" rx="32" ry="19" fill="#fff8e7" />
+  <header>
+    <h1>BREWMOOSE <span class="labs">LABS</span></h1>
+    <p class="tagline">crafting ideas, one brew at a time</p>
+  </header>
 
-      <!-- Mug handle -->
-      <path d="M280 100 Q330 100 330 140 Q330 180 280 180" fill="none" stroke="#c0813d" stroke-width="18" stroke-linecap="round"/>
+  <div class="divider" aria-hidden="true">· · · · · · ·</div>
 
-      <!-- Moose antlers (coming out of foam) -->
-      <!-- Left antler -->
-      <path d="M150 58 Q140 20 115 10" fill="none" stroke="#5c3a1e" stroke-width="7" stroke-linecap="round"/>
-      <path d="M115 10 Q105 5 95 12" fill="none" stroke="#5c3a1e" stroke-width="5" stroke-linecap="round"/>
-      <path d="M115 10 Q110 0 100 2" fill="none" stroke="#5c3a1e" stroke-width="5" stroke-linecap="round"/>
-      <path d="M120 18 Q112 12 104 18" fill="none" stroke="#5c3a1e" stroke-width="5" stroke-linecap="round"/>
+  <main id="game-wrapper">
+    <div id="score-bar">
+      <span class="hi">HI <span id="hi-score">00000</span></span>
+      <span id="cur-score">00000</span>
+    </div>
+    <div id="game-area" tabindex="0" role="application"
+         aria-label="Moose runner game – press space to jump">
+      <div id="moose">🫎</div>
+      <div id="ground"><span id="ground-inner"></span></div>
+      <div id="msg"><span class="sub">space · tap · click</span></div>
+    </div>
+  </main>
 
-      <!-- Right antler -->
-      <path d="M230 58 Q240 20 265 10" fill="none" stroke="#5c3a1e" stroke-width="7" stroke-linecap="round"/>
-      <path d="M265 10 Q275 5 285 12" fill="none" stroke="#5c3a1e" stroke-width="5" stroke-linecap="round"/>
-      <path d="M265 10 Q270 0 280 2" fill="none" stroke="#5c3a1e" stroke-width="5" stroke-linecap="round"/>
-      <path d="M260 18 Q268 12 276 18" fill="none" stroke="#5c3a1e" stroke-width="5" stroke-linecap="round"/>
+  <footer><p class="copy">© 2026 brewmoose labs</p></footer>
 
-      <!-- Moose eyes peeking over foam -->
-      <circle cx="170" cy="64" r="6" fill="#5c3a1e"/>
-      <circle cx="210" cy="64" r="6" fill="#5c3a1e"/>
-      <circle cx="172" cy="62" r="2" fill="#fff"/>
-      <circle cx="212" cy="62" r="2" fill="#fff"/>
+  <script>
+  (() => {
+    'use strict';
 
-      <!-- Text: BrewMoose Labs -->
-      <text y="248" text-anchor="middle" font-family="'Georgia', serif" font-size="38">
-        <tspan x="200" fill="#d4973e" font-weight="bold" letter-spacing="2">BrewMoose</tspan>
-        <tspan dx="8" fill="#8b9dc3" font-weight="300" letter-spacing="4">Labs</tspan>
-      </text>
-    </svg>
-    <p class="tagline">Crafting ideas, one brew at a time</p>
-  </div>
+    /* ── config ───────────────────────────── */
+    const C = {
+      gravity:    0.65,
+      jumpForce: -12.5,
+      speedInit:  4,
+      speedMax:  13,
+      speedUp:    0.002,
+      gapMin:     500,
+      gapMax:    1100,
+      mooseX:     50,
+      mooseW:     36,
+      mooseH:     36,
+      groundH:    24,
+      hitShrink:  10,
+    };
+
+    /* ── obstacle templates ───────────────── */
+    const TYPES = [
+      { ch: '🍺',    w: 30, h: 32, sz: 30 },
+      { ch: '🍺🍺',  w: 58, h: 32, sz: 30 },
+      { ch: '🍻',    w: 36, h: 38, sz: 34 },
+    ];
+
+    /* ── state ────────────────────────────── */
+    const S = {
+      phase: 'idle',
+      y: 0, vy: 0,
+      speed: C.speedInit,
+      score: 0,
+      hi: +localStorage.getItem('bml-hi') || 0,
+      obs: [],
+      gap: 250,
+      gx: 0,
+      raf: 0,
+      prev: 0,
+      milestone: 100,
+    };
+
+    /* ── DOM ──────────────────────────────── */
+    const $ = id => document.getElementById(id);
+    const area  = $('game-area');
+    const moose = $('moose');
+    const gnd   = $('ground-inner');
+    const msg   = $('msg');
+    const hiEl  = $('hi-score');
+    const scEl  = $('cur-score');
+
+    /* ── ground texture ───────────────────── */
+    const G = '·    ·  ·   ·  · ·    ·   ·  ·   ·    · ·  ·  ·   · ';
+    gnd.textContent = G.repeat(15);
+
+    /* ── helpers ──────────────────────────── */
+    const pad5 = n => String(Math.floor(n)).padStart(5, '0');
+    function showHi() { hiEl.textContent = pad5(S.hi); }
+    showHi();
+
+    /* ── start / restart ──────────────────── */
+    function start() {
+      S.phase = 'play';
+      S.y = 0; S.vy = 0;
+      S.speed = C.speedInit;
+      S.score = 0;
+      S.obs.forEach(o => o.el.remove());
+      S.obs = [];
+      S.gap = 200;
+      S.gx = 0;
+      S.milestone = 100;
+      msg.innerHTML = '';
+      area.classList.add('running');
+      S.prev = performance.now();
+      S.raf = requestAnimationFrame(tick);
+    }
+
+    /* ── jump ─────────────────────────────── */
+    function jump() {
+      if (S.phase !== 'play') { start(); return; }
+      if (S.y < 2) {
+        S.vy = C.jumpForce;
+        area.classList.remove('running');
+      }
+    }
+
+    /* ── spawn obstacle ───────────────────── */
+    function spawn() {
+      const t = TYPES[Math.random() * TYPES.length | 0];
+      const el = document.createElement('div');
+      el.className = 'obs';
+      el.textContent = t.ch;
+      el.style.fontSize = t.sz + 'px';
+      area.appendChild(el);
+      S.obs.push({ x: area.clientWidth + 20, type: t, el });
+    }
+
+    /* ── game over ────────────────────────── */
+    function die() {
+      S.phase = 'dead';
+      cancelAnimationFrame(S.raf);
+      area.classList.remove('running');
+      if (S.score > S.hi) {
+        S.hi = Math.floor(S.score);
+        localStorage.setItem('bml-hi', S.hi);
+        showHi();
+      }
+      msg.innerHTML =
+        '<span class="title">GAME OVER</span>' +
+        '<span class="sub">space · tap · click</span>';
+    }
+
+    /* ── main loop ────────────────────────── */
+    function tick(now) {
+      const dt = Math.min((now - S.prev) / 16.667, 3);
+      S.prev = now;
+
+      /* physics */
+      S.vy += C.gravity * dt;
+      S.y  -= S.vy * dt;
+      if (S.y <= 0) { S.y = 0; S.vy = 0; area.classList.add('running'); }
+      moose.style.bottom = (C.groundH + S.y) + 'px';
+
+      /* speed & score */
+      S.speed = Math.min(C.speedMax, S.speed + C.speedUp * dt);
+      S.score += S.speed * 0.02 * dt;
+      scEl.textContent = pad5(S.score);
+
+      /* milestone flash */
+      if (S.score >= S.milestone) {
+        S.milestone += 100;
+        scEl.classList.remove('score-flash');
+        void scEl.offsetWidth;
+        scEl.classList.add('score-flash');
+      }
+
+      /* obstacles */
+      S.gap -= S.speed * dt;
+      if (S.gap <= 0) {
+        spawn();
+        S.gap = C.gapMin + Math.random() * (C.gapMax - C.gapMin);
+      }
+
+      const mL = C.mooseX + C.hitShrink;
+      const mR = C.mooseX + C.mooseW - C.hitShrink;
+
+      for (let i = S.obs.length - 1; i >= 0; i--) {
+        const o = S.obs[i];
+        o.x -= S.speed * dt;
+        o.el.style.left = o.x + 'px';
+
+        if (o.x + o.type.w < -20) {
+          o.el.remove();
+          S.obs.splice(i, 1);
+          continue;
+        }
+
+        /* collision */
+        const oL = o.x + C.hitShrink;
+        const oR = o.x + o.type.w - C.hitShrink;
+        if (mR > oL && mL < oR && S.y < o.type.h - C.hitShrink) {
+          die();
+          return;
+        }
+      }
+
+      /* ground scroll */
+      S.gx -= S.speed * dt;
+      if (S.gx < -300) S.gx += 300;
+      gnd.style.transform = 'translateX(' + S.gx + 'px)';
+
+      S.raf = requestAnimationFrame(tick);
+    }
+
+    /* ── input ────────────────────────────── */
+    document.addEventListener('keydown', e => {
+      if (e.code === 'Space' || e.code === 'ArrowUp') {
+        e.preventDefault();
+        jump();
+      }
+    });
+    area.addEventListener('pointerdown', e => { e.preventDefault(); jump(); });
+  })();
+  </script>
+
 </body>
 </html>
