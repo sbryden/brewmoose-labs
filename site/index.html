@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BrewMoose Labs</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0f1117;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    .logo-container {
+      text-align: center;
+      animation: fadeIn 1.2s ease-out;
+    }
+
+    .logo-container svg {
+      width: min(80vw, 420px);
+      height: auto;
+    }
+
+    .tagline {
+      color: #6b7280;
+      font-size: 0.95rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-top: 1.5rem;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="logo-container">
+    <!-- BrewMoose Labs logo -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 260" role="img" aria-label="BrewMoose Labs logo">
+      <!-- Mug body -->
+      <rect x="100" y="60" width="180" height="150" rx="18" fill="#c0813d" />
+      <rect x="110" y="70" width="160" height="130" rx="12" fill="#d4973e" />
+
+      <!-- Beer foam -->
+      <ellipse cx="145" cy="68" rx="30" ry="18" fill="#fff8e7" />
+      <ellipse cx="190" cy="62" rx="35" ry="22" fill="#fff8e7" />
+      <ellipse cx="240" cy="66" rx="32" ry="19" fill="#fff8e7" />
+
+      <!-- Mug handle -->
+      <path d="M280 100 Q330 100 330 140 Q330 180 280 180" fill="none" stroke="#c0813d" stroke-width="18" stroke-linecap="round"/>
+
+      <!-- Moose antlers (coming out of foam) -->
+      <!-- Left antler -->
+      <path d="M150 58 Q140 20 115 10" fill="none" stroke="#5c3a1e" stroke-width="7" stroke-linecap="round"/>
+      <path d="M115 10 Q105 5 95 12" fill="none" stroke="#5c3a1e" stroke-width="5" stroke-linecap="round"/>
+      <path d="M115 10 Q110 0 100 2" fill="none" stroke="#5c3a1e" stroke-width="5" stroke-linecap="round"/>
+      <path d="M120 18 Q112 12 104 18" fill="none" stroke="#5c3a1e" stroke-width="5" stroke-linecap="round"/>
+
+      <!-- Right antler -->
+      <path d="M230 58 Q240 20 265 10" fill="none" stroke="#5c3a1e" stroke-width="7" stroke-linecap="round"/>
+      <path d="M265 10 Q275 5 285 12" fill="none" stroke="#5c3a1e" stroke-width="5" stroke-linecap="round"/>
+      <path d="M265 10 Q270 0 280 2" fill="none" stroke="#5c3a1e" stroke-width="5" stroke-linecap="round"/>
+      <path d="M260 18 Q268 12 276 18" fill="none" stroke="#5c3a1e" stroke-width="5" stroke-linecap="round"/>
+
+      <!-- Moose eyes peeking over foam -->
+      <circle cx="170" cy="64" r="6" fill="#5c3a1e"/>
+      <circle cx="210" cy="64" r="6" fill="#5c3a1e"/>
+      <circle cx="172" cy="62" r="2" fill="#fff"/>
+      <circle cx="212" cy="62" r="2" fill="#fff"/>
+
+      <!-- Text: BrewMoose Labs -->
+      <text y="248" text-anchor="middle" font-family="'Georgia', serif" font-size="38">
+        <tspan x="200" fill="#d4973e" font-weight="bold" letter-spacing="2">BrewMoose</tspan>
+        <tspan dx="8" fill="#8b9dc3" font-weight="300" letter-spacing="4">Labs</tspan>
+      </text>
+    </svg>
+    <p class="tagline">Crafting ideas, one brew at a time</p>
+  </div>
+</body>
+</html>
