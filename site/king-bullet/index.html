@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>King Bullet — FPS Target Range | BrewMoose Labs</title>
+  <meta name="description" content="King Bullet by BrewMoose Labs. An innovative, premium FPS target range game focused on speed, precision, and excellence.">
+  <meta name="keywords" content="King Bullet, BrewMoose Labs, Game, FPS, Target Range, Premium, Innovation, Speed, Precision">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="/king-bullet/favicon.svg" />
+  <script type="module" crossorigin src="/king-bullet/assets/index-OU3_Zrdh.js"></script>
+  <link rel="stylesheet" crossorigin href="/king-bullet/assets/index-C4nUrgCG.css">
+</head>
+<body>
+
+<div id="error-msg"></div>
+
+<!-- Start Screen -->
+<div id="start-screen">
+  <h1>KING BULLET</h1>
+  <p>Enter the arena and eliminate every target. Test your aim and reflexes in this high-octane shooting range.</p>
+  <button id="start-btn">ENTER LOBBY</button>
+</div>
+
+<!-- Lobby UI (Overlay on 3D Forest) -->
+<div id="lobby-ui" class="hidden">
+  
+  <!-- Top Navigation Bar -->
+  <div id="lobby-nav">
+    <div class="nav-tabs">
+      <button class="nav-tab active" data-target="shop">SHOP</button>
+      <button class="nav-tab" data-target="inventory">INVENTORY</button>
+    </div>
+    <div class="nav-right">
+      <div id="kb-display">◆ <span id="kb-display-val">0</span> KB</div>
+      <button id="nav-deploy-btn">DEPLOY ➔</button>
+    </div>
+  </div>
+
+  <!-- Shop & Inventory Panel (Outfit Selection) -->
+  <div id="outfits-panel" class="lobby-panel active">
+    
+    <!-- Fullscreen Grid Container -->
+    <div id="skins-grid-container" class="skins-fullscreen">
+      <div class="skins-panel-header">
+        <h2 id="outfits-panel-title">SHOP</h2>
+        <div id="shop-timer" class="shop-timer hidden">REFRESHES IN 12:45:00</div>
+      </div>
+      
+      <!-- Inventory Content -->
+      <div id="inventory-content" class="hidden">
+        <div class="category-tabs">
+          <button class="cat-tab active" data-cat="all">ALL</button>
+          <button class="cat-tab" data-cat="military">MIL</button>
+          <button class="cat-tab" data-cat="tactical">TAC</button>
+          <button class="cat-tab" data-cat="street">STR</button>
+          <button class="cat-tab" data-cat="elite">ELI</button>
+        </div>
+        <div id="outfit-grid" class="outfit-grid">
+          <!-- Owned outfits injected via JS -->
+        </div>
+      </div>
+
+      <!-- Shop Content -->
+      <div id="shop-content">
+        <h3 class="shop-section-title">FEATURED</h3>
+        <div id="featured-grid" class="featured-grid"></div>
+        <h3 class="shop-section-title">DAILY ITEMS</h3>
+        <div id="daily-grid" class="daily-grid"></div>
+      </div>
+    </div>
+
+    <!-- Focus Mode Container (Hidden until clicked) -->
+    <div id="skins-focus-container" class="skins-focus hidden">
+      <div id="anim-state-label">STANDING</div>
+      
+      <div class="item-focus-sidebar">
+        <button id="back-to-grid-btn">⮜ BACK</button>
+        <div class="item-focus-details">
+          <h1 id="focus-name">OUTFIT NAME</h1>
+          <div id="focus-rarity" class="focus-rarity">RARITY</div>
+          <p id="focus-desc">A highly trained operative.</p>
+        </div>
+        <div id="unlock-area" class="hidden">
+          <button id="unlock-btn" disabled>🔓 UNLOCK — 0 KB</button>
+        </div>
+        <div id="equip-area" class="hidden">
+          <button id="equip-btn">EQUIP</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+</div>
+
+<!-- HUD -->
+<div id="hud">
+  <!-- Damage vignette (red flash when hit) -->
+  <div id="damage-vignette"></div>
+  <div id="crosshair"><div class="crosshair-dot"></div></div>
+  <div id="hitmarker">
+    <svg viewBox="0 0 24 24" width="24" height="24">
+      <line x1="3" y1="3" x2="8" y2="8" stroke="#ffd740" stroke-width="2.5"/>
+      <line x1="16" y1="3" x2="21" y2="8" stroke="#ffd740" stroke-width="2.5"/>
+      <line x1="3" y1="21" x2="8" y2="16" stroke="#ffd740" stroke-width="2.5"/>
+      <line x1="16" y1="21" x2="21" y2="16" stroke="#ffd740" stroke-width="2.5"/>
+    </svg>
+  </div>
+
+  <div id="top-bar">
+    <div class="stat"><span class="stat-label">Score</span><span class="stat-value" id="score-val">0</span></div>
+    <div class="stat"><span class="stat-label">Targets</span><span class="stat-value" id="kills-val">0</span></div>
+    <div class="stat"><span class="stat-label">Time</span><span class="stat-value" id="timer-val">0:00</span></div>
+  </div>
+
+  <div id="bottom-bar">
+    <div class="bottom-panel">
+      <span id="health-label">100</span>
+      <div id="health-bar-outer"><div id="health-bar-inner"></div></div>
+    </div>
+    <div class="bottom-panel" style="flex-direction: column; align-items: flex-start;">
+      <div id="ammo-display">
+        <span id="ammo-current">30</span><span id="ammo-sep">/</span><span id="ammo-reserve">90</span>
+      </div>
+      <span id="reload-hint">E to reload</span>
+    </div>
+  </div>
+
+  <div id="kill-feed"></div>
+  <div id="weapon-info">Ruger Mark IV — .22 LR</div>
+  <div id="slot-indicators">
+    <div class="slot-ind active" id="slot-1">1 PRI</div>
+    <div class="slot-ind" id="slot-2">2 SEC</div>
+    <div class="slot-ind" id="slot-3">3 MEL</div>
+  </div>
+  <div id="interact-prompt" class="hidden"></div>
+  <div id="muzzle-flash"></div>
+  <div id="sniper-scope" class="hidden">
+    <div class="scope-crosshair"></div>
+  </div>
+  <div id="minimap-container"><canvas id="minimap-canvas" width="140" height="140"></canvas></div>
+</div>
+
+<!-- Death Screen -->
+<div id="death-screen" class="hidden">
+  <div class="death-container">
+    <h1 class="death-title">YOU DIED</h1>
+    <p class="death-sub">The enemy got you.</p>
+    <div class="death-stats">
+      <div class="ds-row"><span>Score</span><span id="death-score">0</span></div>
+      <div class="ds-row"><span>Kills</span><span id="death-kills">0</span></div>
+      <div class="ds-row ds-kb"><span>KB Earned</span><span id="death-kb">+0</span></div>
+    </div>
+    <button id="respawn-btn">RESPAWN</button>
+  </div>
+</div>
+
+
+
+<canvas id="game-canvas"></canvas>
+
+</body>
+</html>
