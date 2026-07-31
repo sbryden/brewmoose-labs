@@ -87,6 +87,20 @@
     @keyframes flash{0%,100%{color:#4a4a5a}50%{color:#d4973e}}
 
     /* ── footer ───────────────────────────── */
+    /* ── projects nav ─────────────────────── */
+    .projects{text-align:center;animation:fadeIn 1s ease-out .25s both}
+    .projects-label{
+      font-size:.6rem;letter-spacing:.3em;color:#2a2a3a;
+      text-transform:uppercase;margin-bottom:.6rem;
+    }
+    .projects a{
+      font-size:.75rem;letter-spacing:.15em;color:#4ead5b;
+      text-decoration:none;border:1px solid #16162a;
+      padding:.4rem 1rem;border-radius:2px;
+      transition:border-color .2s,color .2s;
+    }
+    .projects a:hover{border-color:#4ead5b;color:#5fc46c}
+
     footer{text-align:center;animation:fadeIn 1s ease-out .3s both}
     .copy{font-size:.65rem;color:#1e1e2e;letter-spacing:.12em}
 
@@ -117,6 +131,14 @@
       <div id="msg"><span class="sub">space · tap · click</span></div>
     </div>
   </main>
+
+  <nav class="projects">
+    <p class="projects-label">Projects</p>
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+      <a href="/greenthumb.html">🌱 GreenThumb</a>
+      <a href="/king-bullet">👑 King Bullet</a>
+    </div>
+  </nav>
 
   <footer><p class="copy">© 2026 brewmoose labs</p></footer>
 
